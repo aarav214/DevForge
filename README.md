@@ -16,6 +16,11 @@ It combines project-aware AI assistance with package data from major registries.
 ## 🎬 Demo
 
 <!-- Add GIF or screenshot here -->
+<img width="1366" height="740" alt="Screenshot from 2026-07-25 05-01-57" src="https://github.com/user-attachments/assets/ea2fb3f2-46cd-45de-a824-aa3537c4b0f6" />
+
+<img width="1366" height="740" alt="Screenshot from 2026-07-25 05-00-31" src="https://github.com/user-attachments/assets/2d9b7e45-d156-417f-9262-7599d5069610" />
+<img width="1366" height="740" alt="Screenshot from 2026-07-25 05-00-17" src="https://github.com/user-attachments/assets/e360d4c7-e01a-4961-a2ee-08bf3700841c" />
+
 
 ### Library Explorer
 Browse libraries by area and category, search across supported ecosystems, and inspect package information.
@@ -126,35 +131,9 @@ DevForge uses a VS Code Webview architecture where the UI communicates with the 
 
 The Extension Host handles operations that require workspace access, registry requests, package management, or communication with the local backend.
 
-```text
-               +-------------------------------------------------+
-               |                   Webview UI                    |
-               |                (Vite + React)                   |
-               +-----------------------+-------------------------+
-                                       |
-                               (postMessage IPC)
-                                       |
-                                       ▼
-               +-------------------------------------------------+
-               |              VS Code Extension Host             |
-               |                (TypeScript Node)                |
-               +----------+--------------------------+-----------+
-                          |                          |
-                     (HTTPS API)              (localhost HTTP)
-                          |                          |
-                          ▼                          ▼
-               +--------------------+      +--------------------+
-               |   Package APIs     |      |  FastAPI Backend   |
-               | (npm, PyPI, etc.)  |      |   (Python LLM)     |
-               +--------------------+      +----------+---------+
-                                                      |
-                                                  (Gemini)
-                                                      |
-                                                      ▼
-                                           +--------------------+
-                                           |  Google AI Studio  |
-                                           +--------------------+
-```
+
+<img width="831" height="1019" alt="image" src="https://github.com/user-attachments/assets/4e82dee2-49bf-4eb2-beab-bf48f84f2320" />
+<img width="831" height="1019" alt="image" src="https://github.com/user-attachments/assets/64890f19-c5cc-4a26-a437-05e888738008" />
 
 ---
 
