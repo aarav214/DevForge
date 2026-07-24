@@ -17,7 +17,7 @@ Rules:
 - Never invent dependencies.
 - Return ONLY valid JSON that matches the expected schema.
 - Do not use markdown code fences in your output, just raw JSON.
-- Be concise. Avoid greetings, conversational text, and conclusions.
+- Be concise. Avoid greetings, conversational texts , description in 1 line , and conclusions.
 """
 
 class PromptBuilder:
