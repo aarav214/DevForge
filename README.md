@@ -1,53 +1,81 @@
-# DevForge: Live Multi-Registry Package Explorer & AI Assistant
+# 🛠️ DevForge: AI-Powered Multi-Registry Package Explorer
 
-DevForge is a developer tooling suite that bridges the gap between codebase package dependencies, live registry analytics, and context-aware AI recommendations. 
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.0-blue.svg)](https://www.typescriptlang.org/)
+[![FastAPI](https://img.shields.io/badge/FastAPI-0.100%2B-green.svg)](https://fastapi.tiangolo.com/)
+[![Protocol: MCP](https://img.shields.io/badge/Protocol-MCP-orange.svg)](https://modelcontextprotocol.io/)
 
----
-
-## ⚡ The Problems DevForge Solves
-
-### 1. Inefficient Package Research
-* **The Problem**: Developers waste hours switching between browser tabs (npm, PyPI, crates.io, NuGet, pub.dev, Maven Central) to search for libraries, check their popularity, evaluate licenses, and find documentation.
-* **The Solution**: DevForge aggregates search results and live telemetry from **8 major package registries** into a single unified dashboard directly inside the VS Code editor.
-
-### 2. Context-Blind AI Suggestions
-* **The Problem**: General AI chatbots don't know what tech stack, dependencies, or versions a developer's local project is currently using. Developers are forced to copy-paste their configurations, which is tedious and security-risky.
-* **The Solution**: DevForge automatically scans the active workspace, extracts a precise JSON repository schema, and injects this state into the AI Chat Box. The AI has immediate context of your exact project structure.
-
-### 3. Webview CORS & CSP Sandboxing
-* **The Problem**: VS Code Webviews are highly sandboxed. Direct network fetches to third-party registry APIs violate Content Security Policies (CSP) and trigger CORS blocks inside the editor.
-* **The Solution**: DevForge routes all live API registry queries securely through the **VS Code Extension Host (Node.js)** process using message passing (`postMessage`), safely bypassing browser sandboxing.
-
-### 4. API Rate-Limiting during Bulk Lookups
-* **The Problem**: Scanning directories and querying API details (like GitHub stars, forks, and licenses) for hundreds of libraries quickly exhausts API rate limits.
-* **The Solution**: DevForge uses a **persistent disk-cache layer** (10-minute search cache, 4-hour details cache) and **lazy-loads** deep telemetry metrics *only* when a package card is expanded in the UI.
-
-### 5. Multi-Language Syntax Overhead
-* **The Problem**: Developers working in polyglot environments have to recall the exact installer syntax for different package managers (e.g. `npm install`, `poetry add`, `cargo add`, `composer require`, `dotnet add package`).
-* **The Solution**: DevForge auto-detects the library's ecosystem and displays the **exact copyable installation command**, automatically determining specialized criteria like Flutter vs. Dart configurations.
-
-### 6. Isolation of External AI Agents from Local Workspace
-* **The Problem**: Modern AI-agent interfaces (like Cursor or Claude Desktop) cannot natively read local file layouts or perform structural dependency analysis.
-* **The Solution**: DevForge integrates a **Model Context Protocol (MCP) server** over stdio, allowing external agents to query workspace frameworks and generate tailored code suggestions.
+DevForge is an intelligent, context-aware package explorer and architecture assistant built directly into your IDE. It bridges the gap between codebase dependency management, real-time registry telemetry, and global AI knowledge.
 
 ---
 
-## 📦 Supported Package Registries & Global AI Knowledge
+## ⚡ Real-World Problems DevForge Solves
 
-* **Global AI Recommendations**: Powered by advanced LLMs (such as Google Gemma), the DevForge AI Assistant is not constrained to local indexes and can provide detailed analysis, security audits, and code examples for **any library available on the internet**.
-* **Native Telemetry Integrations**: To assist with live verification and package management, DevForge directly queries and displays real-time telemetry (downloads, stars, updates, licenses, and copyable installation commands) for the 8 most widely-used package registries:
-  * **npm** (Node.js)
-  * **PyPI** (Python)
-  * **crates.io** (Rust/Cargo)
-  * **NuGet** (.NET)
-  * **Maven Central** (Java)
-  * **RubyGems** (Ruby)
-  * **Packagist** (PHP/Composer)
-  * **pub.dev** (Flutter/Dart)
+| Developer Pain Point | DevForge Solution | Technical Mechanism |
+| :--- | :--- | :--- |
+| **Tab-Fatigue & Context Switching** | Access telemetry for **8 package ecosystems** inside one unified IDE panel. | Unified, debounced multi-registry search parser. |
+| **Context-Blind AI Suggestions** | AI recommendations automatically account for your project's current packages. | Scans workspace, compiles metadata, and feeds it into the LLM context. |
+| **Sandboxed CORS/CSP Errors** | Bypass security sandbox constraints blocking 3rd-party API lookups inside Webviews. | Routes all API requests through the VS Code Extension Host via IPC messaging. |
+| **Quotas & API Rate Limits** | Avoid hitting GitHub/Registry query limits during search sweeps. | Persistent disk-backed cache with lazy-loaded metrics on card expansion. |
+| **Syntax Overhead in Polyglot Projects** | Instantly generate exact installer shell commands for any ecosystem. | Auto-detects ecosystem logic (such as Dart vs. Flutter criteria). |
+| **Isolated External AI Agents** | Allow external IDE agents (Cursor, Claude) to scan codebases programmatically. | FastMCP Server running on standard input/output (`stdio`). |
 
 ---
 
-## 📂 Project File Structure
+## 📦 Global AI Knowledge & Live Telemetry
+
+DevForge operates on two key intellectual layers:
+
+1. **Global AI Recommendations**: Powered by Google Gemma and Gemini models, the assistant holds knowledge of **any software library available on the internet**—not just those indexed locally. It acts as an open-ended advisor on architecture, security, and refactoring.
+2. **Native Telemetry Adapters**: For the most widely-used package registries, DevForge queries live APIs to serve up-to-date versions, downloads, stars, licenses, and installers:
+   * **npm** (Node.js/Frontend)
+   * **PyPI** (Python)
+   * **crates.io** (Rust/Cargo)
+   * **NuGet** (.NET/C#)
+   * **Maven Central** (Java/JVM)
+   * **RubyGems** (Ruby)
+   * **Packagist** (PHP/Composer)
+   * **pub.dev** (Flutter/Dart)
+
+---
+
+## 🏗️ Architecture & Communication Flow
+
+DevForge uses a **Hybrid Extension Bridge** architecture to circumvent browser security constraints while maintaining clean interface boundaries.
+
+```text
+               +-------------------------------------------------+
+               |                   Webview UI                    |
+               |                (Vite + React)                   |
+               +-----------------------+-------------------------+
+                                       |
+                               (postMessage IPC)
+                                       |
+                                       ▼
+               +-------------------------------------------------+
+               |              VS Code Extension Host             |
+               |                (TypeScript Node)                |
+               +----------+--------------------------+-----------+
+                          |                          |
+                     (HTTPS API)              (localhost HTTP)
+                          |                          |
+                          ▼                          ▼
+               +--------------------+      +--------------------+
+               |   Package APIs     |      |  FastAPI Backend   |
+               | (npm, PyPI, etc.)  |      |   (Python LLM)     |
+               +--------------------+      +----------+---------+
+                                                      |
+                                                  (Gemini)
+                                                      |
+                                                      ▼
+                                           +--------------------+
+                                           |  Google AI Studio  |
+                                           +--------------------+
+```
+
+---
+
+## 📂 Codebase Directory Map
 
 ```text
 DevForge/
@@ -86,84 +114,93 @@ DevForge/
 
 ---
 
-## 🛠️ Getting Started
+## ⚙️ Configuration & Environment Setup
 
-### 1. Backend Setup
-1. Navigate to the `backend/` directory:
-   ```bash
-   cd backend
-   ```
-2. Initialize the Python environment and install dependencies:
-   ```bash
-   python3 -m venv .venv
-   source .venv/bin/activate
-   pip install -r requirements.txt
-   ```
-3. Configure your environment keys in a `.env` file inside `backend/`:
-   ```dotenv
-   LLM_PROVIDER=google_ai_studio
-   GEMINI_API_KEY=your_gemini_api_key_here
-   WORKSPACE_ROOT=/absolute/path/to/your/workspaces
-   ```
-4. Run the Uvicorn development server:
-   ```bash
-   uvicorn main:app --reload --host 127.0.0.1 --port 8000
-   ```
+Create a `.env` file inside the `backend/` directory with the following variables:
 
-### 2. VS Code Extension & Frontend Setup
-1. In the project root, install packages and compile the extension code:
-   ```bash
-   npm install
-   npx tsc -b
-   ```
-2. Set up and build the Webview React application:
-   ```bash
-   cd webview-ui
-   npm install
-   npm run build
-   ```
-3. Launch the Extension inside VS Code:
-   * Open the project root folder in VS Code.
-   * Press `F5` (or go to **Run and Debug** -> **Launch Extension**). This spins up a new *Extension Development Host* window where you can trigger the DevForge commands.
+| Variable | Description | Example Value |
+| :--- | :--- | :--- |
+| `LLM_PROVIDER` | LLM API provider model configuration | `google_ai_studio` |
+| `GEMINI_API_KEY` | Your Gemini Studio API key | `AIzaSy...` |
+| `WORKSPACE_ROOT` | Security boundary; limits repository scans | `/home/user/projects` |
+| `REQUEST_TIMEOUT` | Timeout limit in seconds for LLM queries | `90` |
+| `MAX_TOKENS` | Token generation boundary for prompts | `2000` |
 
 ---
 
-## 🤖 Model Context Protocol (MCP) Interface
+## 🚀 Installation & Running Guide
 
-The MCP Server lets LLM clients (like Claude Desktop or Cursor) analyze your workspace codebases programmatically.
+### 1. Initialize Python Backend
+Navigate to the `backend/` directory and configure the virtual environment:
+```bash
+cd backend
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+```
+Run the development FastAPI server:
+```bash
+uvicorn main:app --reload --host 127.0.0.1 --port 8000
+```
 
-### Running the MCP Server
-Verify you have the virtual environment activated, then start the server from the **Project Root**:
+### 2. Configure extension host
+Navigate back to the project root, install packages, and compile:
+```bash
+npm install
+npx tsc -b
+```
+
+### 3. Build Webview React Assets
+Navigate to the Webview directory, install dependencies, and run Vite compilation:
+```bash
+cd webview-ui
+npm install
+npm run build
+```
+
+### 4. Running DevForge Extension
+1. Open the project root folder in VS Code.
+2. Press `F5` (or execute the **Launch Extension** action under VS Code's **Run and Debug** side panel).
+3. A new *Extension Development Host* window will open with the DevForge panel active.
+
+---
+
+## 🤖 Model Context Protocol (MCP) Integration
+
+The MCP integration allows external LLM agents to interact directly with your workspace diagnostics over standard I/O (`stdio`).
+
+### Running the MCP server
+Ensure the Python virtual environment is activated, then execute this command from the **Project Root**:
 ```bash
 export WORKSPACE_ROOT=/absolute/path/to/workspaces
 python -m backend.mcp.server
 ```
 
-### Supported Tools
-* **`scan_repository`**: Discovers the tech stack and dependencies of a project.
-* **`ask_devforge`**: Queries the AI assistant for library suggestions or refactoring scoped to the repository context.
+### Registered Tools
+* **`scan_repository(repository_path: str)`**: Crawls the codebase to identify files, active dependencies, and languages.
+* **`ask_devforge(repository_path: str, mode: str, query: str)`**: Ask AI assistant questions with context of the scanned metadata.
 
 ---
 
 ## 🧪 Testing and Verification
 
-### Backend & MCP Unit Tests
-Run the Python test suite:
+### Backend Tests
+Execute Python tests using `pytest`:
 ```bash
 source backend/.venv/bin/activate
 export WORKSPACE_ROOT=/absolute/path/to/workspaces
 python -m pytest backend/tests/
 ```
 
-### Package Adapters Live Tests
-Executes test queries against the real registry endpoints for all 8 package ecosystems:
+### Registry Telemetry Tests
+Verify live adapters can query package registries successfully:
 ```bash
 npx ts-node src/test-registries.ts
 ```
 
-### Static Catalog Database Auditor
-Verifies the integrity of local catalog entries:
+### Static Catalog Audit
+Verify the integrity of local package configurations:
 ```bash
 npx ts-node src/validate-catalog.ts
 ```
-Outputs validation reports to `validation_report.json`.
+Results are exported directly to `validation_report.json`.
