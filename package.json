@@ -1,0 +1,47 @@
+{
+  "name": "devforge",
+  "displayName": "DevForge AI",
+  "description": "AI-powered developer library marketplace and project dependency assistant",
+  "version": "1.0.0",
+  "publisher": "aarav",
+  "engines": {
+    "vscode": "^1.74.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "devforge-sidebar-container",
+          "title": "DevForge",
+          "icon": "$(rocket)"
+        }
+      ]
+    },
+    "views": {
+      "devforge-sidebar-container": [
+        {
+          "type": "webview",
+          "id": "devforge.sidebar",
+          "name": "DevForge Marketplace"
+        }
+      ]
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "esbuild src/extension.ts --bundle --outfile=out/extension.js --external:vscode --format=cjs --platform=node",
+    "watch": "esbuild src/extension.ts --bundle --outfile=out/extension.js --external:vscode --format=cjs --platform=node --watch",
+    "build:webview": "cd webview-ui && npm run build",
+    "build": "npm run compile && npm run build:webview"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "@types/vscode": "^1.74.0",
+    "esbuild": "^0.20.0",
+    "typescript": "^5.0.0"
+  }
+}
