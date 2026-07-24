@@ -32,6 +32,21 @@ DevForge is a developer tooling suite that bridges the gap between codebase pack
 
 ---
 
+## 📦 Supported Package Registries & Global AI Knowledge
+
+* **Global AI Recommendations**: Powered by advanced LLMs (such as Google Gemma), the DevForge AI Assistant is not constrained to local indexes and can provide detailed analysis, security audits, and code examples for **any library available on the internet**.
+* **Native Telemetry Integrations**: To assist with live verification and package management, DevForge directly queries and displays real-time telemetry (downloads, stars, updates, licenses, and copyable installation commands) for the 8 most widely-used package registries:
+  * **npm** (Node.js)
+  * **PyPI** (Python)
+  * **crates.io** (Rust/Cargo)
+  * **NuGet** (.NET)
+  * **Maven Central** (Java)
+  * **RubyGems** (Ruby)
+  * **Packagist** (PHP/Composer)
+  * **pub.dev** (Flutter/Dart)
+
+---
+
 ## 📂 Project File Structure
 
 ```text
