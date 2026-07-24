@@ -21,7 +21,36 @@ class AIService:
     def process(self, request: AskRequest) -> Any:
         summary = repo_cache.get(request.repository_path)
         if not summary:
-            raise DevForgeError(code="NOT_SCANNED", message="Repository summary not found in cache. Please /scan first.", status_code=400)
+            import os
+            repo_path = os.path.abspath(request.repository_path)
+            if os.path.isdir(repo_path):
+                logger.info(f"Auto-scanning repository: {repo_path}")
+                from core.parser import RepositoryParser
+                from schemas.models import RepositorySummary
+                parser = RepositoryParser(repo_path)
+                raw_result = parser.analyze()
+                
+                package_managers = set()
+                key_dependencies = {}
+                for p in raw_result.get("projects", []):
+                    if "package_manager" in p:
+                        package_managers.add(p["package_manager"])
+                    if "dependencies" in p:
+                        for k, v in list(p["dependencies"].items())[:50]:
+                            key_dependencies[k] = v
+                
+                summary = RepositorySummary(
+                    repository=raw_result.get("repository", "Unknown"),
+                    repository_type=raw_result.get("repository_type", "Unknown"),
+                    languages=raw_result.get("summary", {}).get("languages", []),
+                    frameworks=raw_result.get("summary", {}).get("frameworks", []),
+                    databases=raw_result.get("summary", {}).get("databases", []),
+                    package_managers=list(package_managers),
+                    key_dependencies=key_dependencies
+                )
+                repo_cache.set(repo_path, summary)
+            else:
+                raise DevForgeError(code="INVALID_PATH", message="Invalid repository path. Path must be an existing directory.", status_code=400)
 
         is_valid, error_msg = InputGuardrails.validate(request.query)
         if not is_valid:
@@ -46,6 +75,7 @@ class AIService:
 
         logger.info(f"Generating LLM response for mode: {request.mode}")
         raw_response = self.llm.generate(prompt)
+        logger.info(f"Raw response from LLM: {raw_response}")
 
         logger.info("Cleaning and validating response...")
         try:
