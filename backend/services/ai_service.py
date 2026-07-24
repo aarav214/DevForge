@@ -1,13 +1,13 @@
 from typing import Any
-from schemas.models import AskRequest, ModeEnum, RecommendationData, BugData, ArchitectureData, GenericData
-from core.prompts import PromptBuilder
-from core.guardrails import InputGuardrails
-from core.cleaner import SchemaCleaner
-from core.cache import repo_cache
-from core.logger import logger
-from core.exceptions import DevForgeError
-from llm.gemma_client import GemmaClient
-from llm.gemini_client import GeminiClient
+from backend.schemas.models import AskRequest, ModeEnum, RecommendationData, BugData, ArchitectureData, GenericData
+from backend.core.prompts import PromptBuilder
+from backend.core.guardrails import InputGuardrails
+from backend.core.cleaner import SchemaCleaner
+from backend.core.cache import repo_cache
+from backend.core.logger import logger
+from backend.core.exceptions import DevForgeError
+from backend.llm.gemma_client import GemmaClient
+from backend.llm.gemini_client import GeminiClient
 import os
 
 class AIService:

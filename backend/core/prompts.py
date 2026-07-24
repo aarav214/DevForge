@@ -1,4 +1,4 @@
-from schemas.models import RepositorySummary
+from backend.schemas.models import RepositorySummary
 
 SYSTEM_PROMPT = """You are DevForge.
 You are an expert Software Architect, Full Stack Engineer, Code Reviewer, and Technical Mentor.

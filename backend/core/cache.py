@@ -3,8 +3,8 @@ import os
 import time
 from typing import Optional, Dict
 
-from schemas.models import RepositorySummary
-from core.logger import logger
+from backend.schemas.models import RepositorySummary
+from backend.core.logger import logger
 
 class RepositoryCache:
     def __init__(self):

@@ -1,6 +1,6 @@
 import re
 from typing import Tuple
-from core.logger import logger
+from backend.core.logger import logger
 
 class InputGuardrails:
     ALLOWED_TOPICS = [

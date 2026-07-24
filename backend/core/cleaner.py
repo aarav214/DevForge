@@ -1,8 +1,8 @@
 import json
 from typing import Type, TypeVar, Any
 from pydantic import BaseModel
-from core.guardrails import OutputGuardrails
-from core.logger import logger
+from backend.core.guardrails import OutputGuardrails
+from backend.core.logger import logger
 import re
 
 T = TypeVar("T", bound=BaseModel)

@@ -3,9 +3,9 @@ import time
 from google import genai  # type: ignore
 from google.genai import types  # type: ignore
 from google.genai.errors import APIError  # type: ignore
-from core.logger import logger
-from core.exceptions import DevForgeError
-from llm.base_client import BaseLLM
+from backend.core.logger import logger
+from backend.core.exceptions import DevForgeError
+from backend.llm.base_client import BaseLLM
 
 class GeminiClient(BaseLLM):
     def __init__(self):

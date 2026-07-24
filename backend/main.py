@@ -4,11 +4,11 @@ load_dotenv()
 from fastapi import FastAPI, Request
 from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
-from api.routes import router
+from backend.api.routes import router
 import os
 import sys
-from core.logger import logger
-from core.exceptions import DevForgeError
+from backend.core.logger import logger
+from backend.core.exceptions import DevForgeError
 
 app = FastAPI(title="DevForge AI API", version="1.0.0")
 

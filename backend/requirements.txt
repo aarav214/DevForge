@@ -5,3 +5,4 @@ requests
 tomli
 google-genai
 python-dotenv
+fastmcp

@@ -1,9 +1,9 @@
 import os
 import requests
 import time
-from core.logger import logger
-from core.exceptions import DevForgeError
-from llm.base_client import BaseLLM
+from backend.core.logger import logger
+from backend.core.exceptions import DevForgeError
+from backend.llm.base_client import BaseLLM
 
 class GemmaClient(BaseLLM):
     def __init__(self):
