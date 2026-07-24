@@ -4,3 +4,4 @@ pydantic
 requests
 tomli
 google-genai
+python-dotenv
