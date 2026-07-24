@@ -10,7 +10,7 @@ from typing import Dict, List, Any, Set
 try:
     import tomllib
 except ImportError:
-    import tomli as tomllib
+    import tomli as tomllib  # type: ignore
 
 
 class RepositoryParser:

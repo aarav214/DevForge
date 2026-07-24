@@ -7,10 +7,16 @@ from core.cache import repo_cache
 from core.logger import logger
 from core.exceptions import DevForgeError
 from llm.gemma_client import GemmaClient
+from llm.gemini_client import GeminiClient
+import os
 
 class AIService:
     def __init__(self):
-        self.llm = GemmaClient()
+        provider = os.getenv("LLM_PROVIDER", "kaggle")
+        if provider == "gemini":
+            self.llm = GeminiClient()
+        else:
+            self.llm = GemmaClient()
 
     def process(self, request: AskRequest) -> Any:
         summary = repo_cache.get(request.repository_path)
