@@ -62,10 +62,21 @@ class RepositoryParser:
     def __init__(self, root: str):
         self.root = os.path.abspath(root)
 
-    def discover_files(self) -> List[str]:
+    def discover_files(self, max_depth: int = 2) -> List[str]:
         manifests = []
+        base_depth = self.root.rstrip(os.path.sep).count(os.path.sep)
+        
         for current, dirs, files in os.walk(self.root):
+            # Calculate current depth relative to root
+            current_depth = current.rstrip(os.path.sep).count(os.path.sep)
+            
+            # Stop traversing if we've reached max_depth
+            if current_depth - base_depth >= max_depth:
+                dirs[:] = []  # Clear dirs so os.walk doesn't go deeper
+                
+            # Filter out skipped directories
             dirs[:] = [d for d in dirs if d not in self.SKIP_DIRS]
+            
             for f in files:
                 if f in self.SUPPORTED_FILES:
                     manifests.append(os.path.join(current, f))

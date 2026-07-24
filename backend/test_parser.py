@@ -1,10 +1,11 @@
-from pprint import pprint
-from parser import RepositoryParser
+import sys
+import os
+import json
+sys.path.append(os.getcwd())
 
-REPO_PATH = "/home/suzi/WORKSPACE/Open_source/Rhythma/"
+from core.parser import RepositoryParser
 
-parser = RepositoryParser(REPO_PATH)
-
+parser = RepositoryParser("/home/suzi/WORKSPACE/Projects/devforge-ai")
 result = parser.analyze()
 
-pprint(result, sort_dicts=False)
+print(json.dumps(result, indent=2))
