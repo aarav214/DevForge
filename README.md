@@ -1,3 +1,4 @@
+
 # 🛠️ DevForge: AI-Powered Multi-Registry Package Explorer
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
@@ -11,14 +12,14 @@ DevForge is an intelligent, context-aware package explorer and architecture assi
 
 ## ⚡ Real-World Problems DevForge Solves
 
-| Developer Pain Point | DevForge Solution | Technical Mechanism |
-| :--- | :--- | :--- |
-| **Tab-Fatigue & Context Switching** | Access telemetry for **8 package ecosystems** inside one unified IDE panel. | Unified, debounced multi-registry search parser. |
-| **Context-Blind AI Suggestions** | AI recommendations automatically account for your project's current packages. | Scans workspace, compiles metadata, and feeds it into the LLM context. |
-| **Sandboxed CORS/CSP Errors** | Bypass security sandbox constraints blocking 3rd-party API lookups inside Webviews. | Routes all API requests through the VS Code Extension Host via IPC messaging. |
-| **Quotas & API Rate Limits** | Avoid hitting GitHub/Registry query limits during search sweeps. | Persistent disk-backed cache with lazy-loaded metrics on card expansion. |
-| **Syntax Overhead in Polyglot Projects** | Instantly generate exact installer shell commands for any ecosystem. | Auto-detects ecosystem logic (such as Dart vs. Flutter criteria). |
-| **Isolated External AI Agents** | Allow external IDE agents (Cursor, Claude) to scan codebases programmatically. | FastMCP Server running on standard input/output (`stdio`). |
+| Developer Pain Point                                  | DevForge Solution                                                                                                                                 | Technical Mechanism                                                                                           |
+| ----------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------- |
+| **Library Overload**                                  | Helps developers discover the right tools from a huge software ecosystem, organized by what they want to build.                                   | Categorized library explorer + search across major development areas.                                         |
+| **Fragmented Package Discovery**                      | Brings **8 major package ecosystems** into one VS Code experience.                                                                                | Unified registry adapters for npm, PyPI, crates.io, NuGet, Maven Central, RubyGems, Packagist, and pub.dev.   |
+| **Context-Blind Recommendations**                     | Recommends libraries with awareness of the developer’s existing project and dependencies.                                                         | Workspace scanning + project metadata + AI-assisted reasoning.                                                |
+| **“What Library Should I Use?”**                      | Developers describe a feature such as *“I need interactive 3D”* and receive relevant options instead of manually researching dozens of libraries. | Gemma interprets developer intent and reasons over project context and candidate technologies.                |
+| **Outdated & Deprecated Dependencies**                | Surfaces dependency health and warns about deprecated or archived libraries where reliable metadata is available.                                 | Dependency scanning + registry/repository metadata + replacement suggestions where known.                     |
+| **Discovery → Decision → Installation Is Fragmented** | Lets developers discover, understand, choose, install, and manage libraries without leaving their development workflow.                           | VS Code extension integrating the library explorer, PROJECT view, AI assistance, and package-manager actions. |
 
 ---
 
